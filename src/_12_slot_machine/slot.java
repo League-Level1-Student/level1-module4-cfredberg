@@ -1,8 +1,11 @@
 package _12_slot_machine;
 
+import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
@@ -24,14 +27,19 @@ public class slot implements ActionListener {
 	int num1 = 0;
 	int num2 = 0;
 	int num3 = 0;
+	int wins = 0;
+	JLabel winCounter = new JLabel("Wins: " + wins);
 	
 	private void code() {
 		// TODO Auto-generated method stub
 		frame.add(panel);
 		frame.setVisible(true);
-		frame.setPreferredSize(new Dimension(500, 300));
+		frame.setPreferredSize(new Dimension(1000, 600));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
+		
+		panel.add(button);
+		panel.add(winCounter);
 		
 		button.addActionListener(this);
 	}
@@ -111,11 +119,20 @@ public class slot implements ActionListener {
 			}
 		}
 		
+		panel.removeAll();
 		panel.add(button);
 		panel.add(pic1);
 		panel.add(pic2);
 		panel.add(pic3);
+		panel.add(winCounter);
 		frame.pack();
+		if (num1 == num2 && num2 == num3) {
+			playSound("win.wav");
+			JOptionPane.showMessageDialog(null, "You Win!");
+			wins++;
+			winCounter.setText("Wins: " + wins);
+			frame.pack();
+		}
 	}
 	
 	private JLabel image(String fileName) throws MalformedURLException{
@@ -128,5 +145,12 @@ public class slot implements ActionListener {
 	JLabel imageLabel = new JLabel(icon);
 	return imageLabel;
 }
+	
+	private void playSound(String fileName) {
+	     AudioClip sound = JApplet.newAudioClip(getClass().getResource(fileName));
+	     sound.play();
+	}
+
+
 
 }
